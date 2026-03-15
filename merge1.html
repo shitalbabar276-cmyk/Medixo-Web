@@ -1,0 +1,1057 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Medixo – AI Powered Medicine System</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Poppins',sans-serif;
+}
+
+body{
+background:linear-gradient(135deg,#021024,#0a2a4d);
+color:white;
+overflow-x:hidden;
+}
+
+/* NAVBAR */
+
+.navbar{
+position:fixed;
+top:20px;
+left:50%;
+transform:translateX(-50%);
+width:85%;
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:12px 30px;
+background:rgba(255,255,255,0.05);
+backdrop-filter:blur(10px);
+border-radius:40px;
+z-index:100;
+border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.logo{
+font-weight:600;
+color:#7cffc4;
+font-size:18px;
+}
+
+.nav-links{
+list-style:none;
+display:flex;
+gap:30px;
+align-items: center;
+}
+
+.nav-links a{
+text-decoration:none;
+color:#ddd;
+font-size:14px;
+}
+
+.nav-right-section {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.lang-select {
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    border: 1px solid #21d192;
+    padding: 5px 10px;
+    border-radius: 15px;
+    outline: none;
+    cursor: pointer;
+    font-size: 12px;
+    appearance: none; /* Fix for visibility */
+    -webkit-appearance: none;
+    text-align: center;
+}
+
+/* PROFILE DROPDOWN STYLES */
+.profile-container {
+    position: relative;
+    cursor: pointer;
+}
+
+.profile-trigger {
+    width: 40px;
+    height: 40px;
+    background: #21d192;
+    color: #021024;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 18px;
+    border: 2px solid transparent;
+    transition: 0.3s;
+}
+
+.profile-trigger:hover {
+    box-shadow: 0 0 15px rgba(33, 209, 146, 0.4);
+    border-color: #7cffc4;
+}
+
+.profile-dropdown {
+    position: absolute;
+    top: 55px;
+    right: 0;
+    width: 280px;
+    background: #0a2a4d;
+    border: 1px solid rgba(124, 255, 196, 0.3);
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    display: none; 
+    z-index: 1000;
+    backdrop-filter: blur(20px);
+}
+
+.profile-dropdown.active {
+    display: block;
+    animation: fadeIn 0.2s ease-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.profile-header {
+    text-align: center;
+    padding-bottom: 15px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    margin-bottom: 15px;
+}
+
+.profile-header h4 { color: #7cffc4; font-size: 18px; }
+.profile-header p { color: #aaa; font-size: 12px; }
+
+.profile-item {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    font-size: 14px;
+}
+
+.profile-item span { color: #cce9dd; }
+.profile-item strong { color: white; }
+
+.logout-btn {
+    width: 100%;
+    margin-top: 10px;
+    padding: 8px;
+    background: rgba(255, 77, 77, 0.1);
+    color: #ff4d4d;
+    border: 1px solid #ff4d4d;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 12px;
+    transition: 0.3s;
+}
+
+.logout-btn:hover { background: #ff4d4d; color: white; }
+
+/* HERO */
+
+.hero{
+height:100vh;
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+text-align:center;
+padding:20px;
+position:relative;
+background:
+radial-gradient(circle at top, rgba(33,209,146,0.3), transparent 60%),
+linear-gradient(135deg,#021024,#0a2a4d);
+}
+
+.badge{
+background:rgba(33,209,146,0.2);
+padding:6px 18px;
+border-radius:20px;
+font-size:12px;
+margin-bottom:20px;
+}
+
+.title{
+font-size:60px;
+margin-bottom:20px;
+color:#7cffc4;
+}
+
+.subtitle{
+max-width:650px;
+color:#cce9dd;
+font-size:18px;
+margin-bottom:40px;
+line-height:1.6;
+}
+
+.btn{
+padding:14px 28px;
+border-radius:30px;
+font-size:14px;
+border:none;
+cursor:pointer;
+background:#21d192;
+color:black;
+transition:0.3s;
+}
+
+.btn:hover{
+background:#7cffc4;
+transform:scale(1.05);
+}
+
+/* Upload */
+
+#fileInput{
+display:none;
+}
+
+.preview{
+margin-top:20px;
+}
+
+.preview img{
+width:200px;
+border-radius:12px;
+display:none;
+border:2px solid #7cffc4;
+box-shadow:0 0 15px rgba(124,255,196,0.3);
+}
+
+/* Search */
+
+.search-box{
+margin-top:25px;
+}
+
+.search-box input{
+padding:12px;
+width:260px;
+border-radius:20px;
+border:none;
+margin-right:10px;
+outline:none;
+}
+
+/* STICKERS */
+
+.sticker{
+position:absolute;
+font-size:32px;
+opacity:0.7;
+animation:float 6s ease-in-out infinite;
+pointer-events: none;
+}
+
+@keyframes float{
+0%{transform:translateY(0px);}
+50%{transform:translateY(-15px);}
+100%{transform:translateY(0px);}
+}
+
+.s1{top:120px; left:80px;}
+.s2{top:200px; right:120px;}
+.s3{top:350px; left:150px;}
+.s4{bottom:180px; right:200px;}
+.s5{bottom:120px; left:120px;}
+.s6{top:300px; right:300px;}
+.s7{top:150px; right:400px;}
+.s8{bottom:200px; right:80px;}
+.s9{bottom:150px; left:300px;}
+.s10{top:420px; right:500px;}
+.s11{top:100px; left:300px;}
+.s12{bottom:100px; right:350px;}
+.s13{top:250px; left:500px;}
+.s14{bottom:250px; left:450px;}
+
+/* SECTIONS */
+
+.section{
+padding:90px 8%;
+}
+
+.section-title{
+text-align:center;
+font-size:34px;
+margin-bottom:50px;
+color:#7cffc4;
+}
+
+/* FEATURES */
+
+.features{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+gap:25px;
+}
+
+.card{
+background:rgba(255,255,255,0.05);
+padding:30px;
+border-radius:20px;
+text-align:center;
+border:1px solid rgba(255,255,255,0.1);
+transition: 0.3s;
+cursor: pointer;
+}
+
+.card:hover {
+    border-color: #21d192;
+    transform: translateY(-5px);
+}
+
+.card h3{
+color:#7cffc4;
+margin-bottom:10px;
+}
+
+.card input {
+    width: 100%;
+    padding: 8px;
+    margin: 10px 0;
+    border-radius: 8px;
+    border: 1px solid #444;
+    background: rgba(0,0,0,0.2);
+    color: white;
+    font-size: 12px;
+}
+
+/* DASHBOARD MINI PREVIEW */
+.analytics-preview {
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-end;
+    height: 45px;
+    margin-top: 15px;
+    gap: 4px;
+}
+.mini-bar {
+    width: 15%;
+    background: #21d192;
+    border-radius: 3px 3px 0 0;
+}
+
+/* DASHBOARD OVERLAY */
+.dashboard-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at top, rgba(33,209,146,0.15), #021024 80%);
+    z-index: 2000;
+    display: none;
+    flex-direction: column;
+    padding: 120px 8% 50px;
+    overflow-y: auto;
+    animation: slideIn 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+@keyframes slideIn {
+    from { opacity: 0; transform: scale(0.95) translateY(30px); }
+    to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.db-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 50px;
+}
+
+.db-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 30px;
+    position: relative;
+    z-index: 5;
+}
+
+.db-card {
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(15px);
+    border: 1px solid rgba(33, 209, 146, 0.2);
+    padding: 30px;
+    border-radius: 25px;
+    animation: fadeInUp 0.8s ease forwards;
+}
+
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.week-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 18px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+
+.status-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 10px;
+}
+
+.dot-taken { background: #21d192; box-shadow: 0 0 10px #21d192; }
+.dot-missed { background: #ff4d4d; box-shadow: 0 0 10px #ff4d4d; }
+
+.hidden { display: none !important; }
+
+/* STEPS */
+
+.steps{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+gap:25px;
+}
+
+.step{
+background:rgba(255,255,255,0.05);
+padding:25px;
+border-radius:18px;
+text-align:center;
+}
+
+/* REMINDER SYSTEM */
+
+.reminder-container{
+display:flex;
+flex-direction:column;
+align-items:center;
+gap:30px;
+}
+
+.reminder-form{
+width:100%;
+max-width:450px;
+background:rgba(255,255,255,0.05);
+padding:30px;
+border-radius:20px;
+border:1px solid #21d192;
+}
+
+.reminder-form input{
+width:100%;
+padding:12px;
+margin:10px 0;
+border:none;
+border-radius:8px;
+background:rgba(255,255,255,0.1);
+color:white;
+}
+
+/* STOP ALARM BUTTON STYLE */
+.stop-alarm-btn {
+    display: none; /* Initially hidden */
+    width: 100%;
+    margin-top: 15px;
+    padding: 12px;
+    background: #ff4d4d;
+    color: white;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    font-weight: 600;
+    box-shadow: 0 0 15px rgba(255, 77, 77, 0.4);
+    animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.03); }
+    100% { transform: scale(1); }
+}
+
+.reminder-list{
+width:100%;
+max-width:500px;
+list-style:none;
+}
+
+.reminder-item{
+background:rgba(33,209,146,0.1);
+padding:15px;
+border-radius:12px;
+margin-bottom:10px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+border-left:5px solid #21d192;
+}
+
+.action-btns { display: flex; gap: 8px; }
+
+.take-btn {
+    background: #21d192;
+    color: black;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.delete-btn{
+background:#ff4d4d;
+color:white;
+border:none;
+padding:5px 10px;
+border-radius:5px;
+cursor:pointer;
+font-size:12px;
+}
+
+/* FOOTER */
+
+footer{
+padding:40px;
+text-align:center;
+background:rgba(0,0,0,0.4);
+margin-top:40px;
+}
+
+</style>
+</head>
+
+<body>
+
+<div id="dashboardPage" class="dashboard-overlay">
+    <div class="sticker s1">🩺</div><div class="sticker s2">💊</div><div class="sticker s3">💉</div>
+    <div class="sticker s4">🩹</div><div class="sticker s5">✂️</div><div class="sticker s6">🌡</div>
+    <div class="sticker s7">🧬</div><div class="sticker s8">🧪</div><div class="sticker s9">🦠</div>
+    <div class="sticker s13">💚</div><div class="sticker s14">⚕️</div>
+
+    <div class="db-header">
+        <h1 id="dbTitle" style="color:#7cffc4;">Health Adherence Dashboard</h1>
+        <button class="btn" onclick="closeDashboard()">✕ Close</button>
+    </div>
+    
+    <div class="db-grid">
+        <div class="db-card" style="animation-delay: 0.1s;">
+            <h3 id="dbWeeklyTitle">Weekly Consumer Journey</h3>
+            <div id="weeklyHistory">
+                <div class="week-row"><span>Monday</span><span><span class="status-dot dot-taken"></span>Taken</span></div>
+                <div class="week-row"><span>Tuesday</span><span><span class="status-dot dot-taken"></span>Taken</span></div>
+                <div class="week-row"><span>Wednesday</span><span><span class="status-dot dot-missed"></span>Missed</span></div>
+                <div class="week-row"><span>Thursday</span><span><span class="status-dot dot-taken"></span>Taken</span></div>
+                <div class="week-row"><span>Friday</span><span><span class="status-dot dot-taken"></span>Taken</span></div>
+                <div class="week-row"><span>Saturday</span><span id="satStatus">Pending</span></div>
+                <div class="week-row"><span>Sunday</span><span id="sunStatus">Pending</span></div>
+            </div>
+        </div>
+        
+        <div class="db-card" style="animation-delay: 0.2s; text-align: center;">
+            <h3 id="dbScoreTitle">Overall Adherence Score</h3>
+            <div style="font-size: 60px; color: #21d192; margin: 25px 0; font-weight: 600;">82%</div>
+            <p id="dbInsight" style="color:#cce9dd; font-size: 14px;">Great job! You are more consistent on weekdays than weekends.</p>
+        </div>
+    </div>
+</div>
+
+<audio id="medixoAlarm" src="https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3" preload="auto" loop></audio>
+
+<nav class="navbar">
+
+<div class="logo">Medixo</div>
+
+<ul class="nav-links">
+<li><a href="#" id="linkHome">Home</a></li>
+<li><a href="#features" id="linkFeatures">Features</a></li>
+<li><a href="#how-it-works" id="linkHow">How It Works</a></li>
+<li><a href="#reminder" id="linkReminder">Reminder</a></li>
+<li>
+    <select class="lang-select" onchange="changeLang(this.value)">
+        <option value="en">EN</option>
+        <option value="hi">HI</option>
+        <option value="mr">MR</option>
+    </select>
+</li>
+</ul>
+
+<div class="nav-right-section">
+    <div class="profile-container" id="profileContainer">
+        <div class="profile-trigger" onclick="toggleProfile(event)" id="userInitial">G</div>
+        
+        <div class="profile-dropdown" id="profileDropdown">
+            <div class="profile-header">
+                <h4 id="dispName">Guest User</h4>
+                <p id="dispEmail">guest@medixo.com</p>
+            </div>
+            <div class="profile-item">
+                <span>Health ID:</span>
+                <strong>#MD-2026</strong>
+            </div>
+            <div class="profile-item">
+                <span>Blood Group:</span>
+                <strong>B+</strong>
+            </div>
+            <div class="profile-item">
+                <span>Records:</span>
+                <strong>12 Files</strong>
+            </div>
+            <button class="logout-btn" onclick="logout()">Log Out</button>
+        </div>
+    </div>
+</div>
+
+</nav>
+
+<section class="hero">
+
+<div class="badge" id="heroBadge">AI HEALTHCARE INNOVATION</div>
+
+<h1 class="title">Medixo</h1>
+
+<p class="subtitle" id="heroSubtitle">
+AI-Powered Medicine Identification & Health Information Platform.
+Upload a medicine image or search by name to get verified dosage,
+side effects, and safety information instantly.
+</p>
+
+<button class="btn" onclick="openUpload()" id="btnUploadHero">Upload Medicine Image</button>
+
+<input type="file" id="fileInput" accept="image/*" onchange="previewImage(event)">
+
+<div class="preview">
+<img id="previewImage">
+</div>
+
+<div class="search-box">
+<input id="searchInput" placeholder="Enter medicine name...">
+<button class="btn" id="btnSearch">Search</button>
+</div>
+
+<div class="sticker s1">🩺</div>
+<div class="sticker s2">💊</div>
+<div class="sticker s3">💉</div>
+<div class="sticker s4">🩹</div>
+<div class="sticker s5">✂️</div>
+<div class="sticker s6">🌡</div>
+<div class="sticker s7">🧬</div>
+<div class="sticker s8">🧪</div>
+<div class="sticker s9">🦠</div>
+<div class="sticker s10">🍯</div>
+<div class="sticker s11">🏥</div>
+<div class="sticker s12">🧫</div>
+<div class="sticker s13">💚</div>
+<div class="sticker s14">⚕️</div>
+
+</section>
+
+<section id="features" class="section">
+
+<h2 class="section-title" id="titleFeatures">Features</h2>
+
+<div class="features">
+
+<div class="card">
+<h3 id="f1Title">AI Medicine Identification</h3>
+<p id="f1Desc">Upload medicine images and AI detects the medicine instantly.</p>
+</div>
+
+<div class="card">
+<h3 id="f2Title">Medicine Search</h3>
+<p id="f2Desc">Search any medicine to get trusted healthcare information.</p>
+</div>
+
+<div class="card" onclick="openDashboard()" style="border-color: #7cffc4;">
+    <h3 id="fDashTitle">Adherence Dashboard</h3>
+    <div class="analytics-preview">
+        <div class="mini-bar" style="height: 40%"></div>
+        <div class="mini-bar" style="height: 70%"></div>
+        <div class="mini-bar" style="height: 20%"></div>
+        <div class="mini-bar" style="height: 90%"></div>
+        <div class="mini-bar" style="height: 50%"></div>
+    </div>
+    <p style="font-size: 11px; color: #7cffc4; margin-top: 10px;">Click to view 1-Week Analytics →</p>
+</div>
+
+<div class="card">
+<h3 id="f3Title">Dosage & Side Effects</h3>
+<p id="f3Desc">View dosage timing, safety precautions and side effects.</p>
+</div>
+
+<div class="card">
+<h3 id="f4Title">Smart Medicine Reminder</h3>
+<p id="f4Desc">Set reminders so you never miss your medicine.</p>
+</div>
+
+<div class="card" id="neuralLinkCard">
+    <h3 id="fNeuralTitle">Family Neural Link</h3>
+    <div id="linkSetup">
+        <p id="fNeuralDesc" style="font-size: 11px; color: #aaa;">Connect to a caregiver's email to monitor missed doses.</p>
+        <input type="email" id="caregiverEmail" placeholder="Caregiver Email">
+        <button id="fNeuralBtn" class="btn" style="padding: 8px 15px; font-size: 12px;" onclick="setupNeuralLink()">Link Profile</button>
+    </div>
+    <div id="linkActive" class="hidden">
+        <p id="fNeuralActive" style="font-size: 11px; color: #21d192;">Status: Connected to Caregiver</p>
+        <div id="neuralStatus" style="margin-top: 10px; font-weight: 600; font-size: 14px; color: #7cffc4;">● Monitoring Doses</div>
+    </div>
+</div>
+
+</div>
+
+</section>
+
+<section id="how-it-works" class="section">
+
+<h2 class="section-title" id="titleHow">How It Works</h2>
+
+<div class="steps">
+
+<div class="step">
+<p id="s1Desc">Upload medicine image or enter medicine name.</p>
+</div>
+
+<div class="step">
+<p id="s2Desc">AI identifies the medicine.</p>
+</div>
+
+<div class="step">
+<p id="s3Desc">View dosage, side effects and benefits.</p>
+</div>
+
+<div class="step">
+<p id="s4Desc">Set reminders for medicine schedule.</p>
+</div>
+
+</div>
+
+</section>
+
+<section id="reminder" class="section">
+
+<h2 class="section-title" id="titleReminder">Medicine Reminder</h2>
+
+<div class="reminder-container">
+
+<div class="reminder-form">
+
+<input type="text" id="medName" placeholder="Medicine Name">
+<input type="date" id="medDate">
+<input type="time" id="medTime">
+
+<button class="btn" style="width:100%" id="btnAddReminder" onclick="addReminder()">Add Reminder</button>
+
+<button id="stopAlarmBtn" class="stop-alarm-btn" onclick="stopAlarm()">Stop Alarm 🔇</button>
+
+</div>
+
+<ul id="reminderList" class="reminder-list"></ul>
+
+</div>
+
+</section>
+
+<footer>
+
+<p id="footerMain">Medixo – AI Powered Medicine Information & Reminder System</p>
+<p id="footerSub">Hackathon Healthcare Project</p>
+
+</footer>
+
+<script>
+
+/* DASHBOARD LOGIC */
+function openDashboard() {
+    document.getElementById('dashboardPage').style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+}
+
+function closeDashboard() {
+    document.getElementById('dashboardPage').style.display = 'none';
+    document.body.style.overflow = 'auto';
+}
+
+/* TRANSLATION DATA */
+const languages = {
+    en: {
+        linkHome: "Home", linkFeatures: "Features", linkHow: "How It Works", linkReminder: "Reminder",
+        heroBadge: "AI HEALTHCARE INNOVATION",
+        heroSubtitle: "AI-Powered Medicine Identification & Health Information Platform. Upload a medicine image or search by name to get verified dosage, side effects, and safety information instantly.",
+        btnUploadHero: "Upload Medicine Image", btnSearch: "Search", searchInput: "Enter medicine name...",
+        titleFeatures: "Features", f1Title: "AI Medicine Identification", f1Desc: "Upload medicine images and AI detects the medicine instantly.",
+        f2Title: "Medicine Search", f2Desc: "Search any medicine to get trusted healthcare information.",
+        fDashTitle: "Adherence Dashboard",
+        f3Title: "Dosage & Side Effects", f3Desc: "View dosage timing, safety precautions and side effects.",
+        f4Title: "Smart Medicine Reminder", f4Desc: "Set reminders so you never miss your medicine.",
+        fNeuralTitle: "Family Neural Link", fNeuralDesc: "Connect to a caregiver's email to monitor missed doses.",
+        fNeuralBtn: "Link Profile", fNeuralActive: "Status: Connected to Caregiver",
+        titleHow: "How It Works", s1Desc: "Upload medicine image or enter medicine name.", s2Desc: "AI identifies the medicine.", s3Desc: "View dosage, side effects and benefits.", s4Desc: "Set reminders for medicine schedule.",
+        titleReminder: "Medicine Reminder", btnAddReminder: "Add Reminder", medName: "Medicine Name",
+        footerMain: "Medixo – AI Powered Medicine Information & Reminder System", footerSub: "Hackathon Healthcare Project",
+        dbTitle: "Health Adherence Dashboard", dbWeeklyTitle: "Weekly Consumer Journey", dbScoreTitle: "Overall Adherence Score"
+    },
+    hi: {
+        linkHome: "होम", linkFeatures: "विशेषताएं", linkHow: "यह कैसे काम करता है", linkReminder: "रिमाइंडर",
+        heroBadge: "AI स्वास्थ्य नवाचार",
+        heroSubtitle: "AI-आधारित दवा पहचान और स्वास्थ्य सूचना मंच। खुराक और सुरक्षा जानकारी के लिए फोटो अपलोड करें या खोजें।",
+        btnUploadHero: "दवा की फोटो अपलोड करें", btnSearch: "खोजें", searchInput: "दवा का नाम लिखें...",
+        titleFeatures: "विशेषताएं", f1Title: "AI दवा पहचान", f1Desc: "दवा की फोटो अपलोड करें और AI तुरंत पहचान करेगा।",
+        f2Title: "दवा खोज", f2Desc: "भरोसेमंद स्वास्थ्य जानकारी के लिए कोई भी दवा खोजें।",
+        fDashTitle: "निष्ठा डैशबोर्ड",
+        f3Title: "खुराक और साइड इफेक्ट", f3Desc: "खुराक का समय और सावधानियां देखें।",
+        f4Title: "स्मार्ट दवा रिमाइंडर", f4Desc: "रिमाइंडर सेट करें ताकि आप दवा कभी न भूलें।",
+        fNeuralTitle: "फैमिली न्यूरल लिंक", fNeuralDesc: "मददगार की ईमेल जोड़ें ताकि वे आपकी दवा पर नज़र रख सकें।",
+        fNeuralBtn: "प्रोफ़ाइल लिंक करें", fNeuralActive: "स्थिति: केयरगिवर से जुड़ा है",
+        titleHow: "यह कैसे काम करता है", s1Desc: "दवा की फोटो अपलोड करें या नाम लिखें।", s2Desc: "AI दवा की पहचान करता है।", s3Desc: "खुराक और फायदे देखें।", s4Desc: "दवा के लिए रिमाइंडर सेट करें।",
+        titleReminder: "दवा रिमाइंडर", btnAddReminder: "रिमाइंडर जोड़ें", medName: "दवा का नाम",
+        footerMain: "Medixo – AI आधारित दवा सूचना और रिमाइंडर सिस्टम", footerSub: "हैकाथॉन हेल्थकेयर प्रोजेक्ट",
+        dbTitle: "स्वास्थ्य रिपोर्ट", dbWeeklyTitle: "साप्ताहिक गतिविधि", dbScoreTitle: "कुल स्वास्थ्य स्कोर"
+    },
+    mr: {
+        linkHome: "मुख्यपृष्ठ", linkFeatures: "वैशिष्ट्ये", linkHow: "हे कसे कार्य करते", linkReminder: "स्मरणपत्र",
+        heroBadge: "AI आरोग्य नाविन्य",
+        heroSubtitle: "AI-आधारित औषध ओळख आणि आरोग्य माहिती प्लॅटफॉर्म। डोस आणि सुरक्षिततेसाठी फोटो अपलोड करा किंवा नाव शोधा।",
+        btnUploadHero: "औषधाचा फोटो अपलोड करा", btnSearch: "शोधा", searchInput: "औषधाचे नाव टाका...",
+        titleFeatures: "वैशिष्ट्ये", f1Title: "AI औषध ओळख", f1Desc: "फोटो अपलोड करा आणि AI त्वरित माहिती देईल।",
+        f2Title: "औषध शोध", f2Desc: "आरोग्य माहितीसाठी कोणतेही औषध शोधा।",
+        fDashTitle: "अनुपालन डॅशबोर्ड",
+        f3Title: "डोस आणि दुष्परिणाम", f3Desc: "डोसची वेळ आणि खबरदारी पहा।",
+        f4Title: "स्मार्ट औषध रिमाइंडर", f4Desc: "औषध विसरू नये म्हणून रिमाइंडर सेट करा।",
+        fNeuralTitle: "फॅमिली न्यूरल लिंक", fNeuralDesc: "काळजीवाहूचा ईमेल जोडा जेणेकरून ते देखरेख करू शकतील।",
+        fNeuralBtn: "प्रोफाइल लिंक करा", fNeuralActive: "स्थिती: केअरगिव्हरशी जोडलेले",
+        titleHow: "हे कसे कार्य करते", s1Desc: "औषधाचा फोटो अपलोड करा किंवा नाव शोधा।", s2Desc: "AI औषध ओळखते।", s3Desc: "डोस आणि फायदे पहा।", s4Desc: "औषधासाठी रिमाइंडर सेट करा।",
+        titleReminder: "औषध रिमाइंडर", btnAddReminder: "रिमाइंडर जोडा", medName: "औषधाचे नाव",
+        footerMain: "Medixo – AI आधारित औषध माहिती आणि रिमाइंडर सिस्टम", footerSub: "हॅकाथॉन हेल्थकेयर प्रोजेक्ट",
+        dbTitle: "आरोग्य अहवाल", dbWeeklyTitle: "साप्ताहिक प्रगती", dbScoreTitle: "एकूण आरोग्य धावसंख्या"
+    }
+};
+
+function changeLang(lang) {
+    const data = languages[lang];
+    for (let key in data) {
+        let el = document.getElementById(key);
+        if (el) {
+            if (el.tagName === "INPUT") el.placeholder = data[key];
+            else el.innerText = data[key];
+        }
+    }
+}
+
+/* PROFILE LOGIC */
+function toggleProfile(event) {
+    event.stopPropagation(); 
+    document.getElementById("profileDropdown").classList.toggle("active");
+}
+
+window.onclick = function(event) {
+    if (!event.target.closest('#profileContainer')) {
+        document.getElementById("profileDropdown").classList.remove("active");
+    }
+}
+
+function loadUser() {
+    const data = localStorage.getItem("medixoUser");
+    if (data) {
+        const user = JSON.parse(data);
+        document.getElementById("dispName").innerText = user.name;
+        document.getElementById("dispEmail").innerText = user.email;
+        document.getElementById("userInitial").innerText = user.name.charAt(0).toUpperCase();
+    }
+}
+
+function logout() {
+    localStorage.removeItem("medixoUser");
+    location.reload(); 
+}
+
+/* IMAGE UPLOAD */
+
+function openUpload(){
+document.getElementById("fileInput").click();
+}
+
+function previewImage(event){
+const reader=new FileReader();
+reader.onload=function(){
+const img=document.getElementById("previewImage");
+img.src=reader.result;
+img.style.display="block";
+}
+reader.readAsDataURL(event.target.files[0]);
+}
+
+/* REMINDER SYSTEM */
+
+let reminders=[];
+
+if("Notification" in window){
+Notification.requestPermission();
+}
+
+function addReminder(){
+const name=document.getElementById("medName").value;
+const date=document.getElementById("medDate").value;
+const time=document.getElementById("medTime").value;
+
+if(!name || !date || !time){
+alert("Please fill all fields!");
+return;
+}
+
+const reminder={
+id:Date.now(),
+name,
+date,
+time,
+notified:false,
+taken: false,
+caregiverNotified: false
+};
+
+reminders.push(reminder);
+updateUI();
+
+document.getElementById("medName").value="";
+alert("Reminder set for "+name);
+}
+
+function updateUI(){
+const list=document.getElementById("reminderList");
+list.innerHTML="";
+
+reminders.forEach(r=>{
+const li=document.createElement("li");
+li.className="reminder-item";
+li.style.opacity = r.taken ? "0.6" : "1";
+
+li.innerHTML=`
+<div>
+<strong style="${r.taken ? 'text-decoration: line-through' : ''}">${r.name}</strong><br>
+<small>${r.date} at ${r.time}</small>
+</div>
+
+<div class="action-btns">
+    ${!r.taken ? `<button class="take-btn" onclick="markAsTaken(${r.id})">Take</button>` : ''}
+    <button class="delete-btn" onclick="deleteReminder(${r.id})">Delete</button>
+</div>
+`;
+list.appendChild(li);
+});
+}
+
+function markAsTaken(id) {
+    const r = reminders.find(item => item.id === id);
+    if(r) {
+        r.taken = true;
+        updateUI();
+        document.getElementById('neuralStatus').innerText = "● All Doses Taken";
+        document.getElementById('neuralStatus').style.color = "#21d192";
+        
+        // Update dashboard status for "Sunday"
+        document.getElementById('sunStatus').innerHTML = '<span class="status-dot dot-taken"></span>Taken';
+    }
+}
+
+function deleteReminder(id){
+stopAlarm(); 
+reminders=reminders.filter(r=>r.id!==id);
+updateUI();
+}
+
+/* NEURAL LINK LOGIC */
+let isNeuralLinked = false;
+let caregiverEmailAddr = "";
+
+function setupNeuralLink() {
+    const email = document.getElementById('caregiverEmail').value;
+    if(!email || !email.includes('@')) {
+        alert("Enter a valid Caregiver Email!");
+        return;
+    }
+    caregiverEmailAddr = email;
+    document.getElementById('linkSetup').classList.add('hidden');
+    document.getElementById('linkActive').classList.remove('hidden');
+    isNeuralLinked = true;
+    alert("Neural Link Established with " + email);
+}
+
+/* STOP ALARM LOGIC */
+function stopAlarm() {
+    const alarm = document.getElementById("medixoAlarm");
+    const stopBtn = document.getElementById("stopAlarmBtn");
+    alarm.pause();
+    alarm.currentTime = 0;
+    stopBtn.style.display = "none"; 
+}
+
+/* BACKGROUND MONITORING */
+setInterval(()=>{
+const now=new Date();
+const currentDate=now.toLocaleDateString('en-CA');
+const currentTime=now.toTimeString().slice(0,5);
+
+reminders.forEach(r=>{
+    if(r.date===currentDate && r.time===currentTime && !r.notified){
+        const alarm = document.getElementById("medixoAlarm");
+        alarm.play();
+        document.getElementById("stopAlarmBtn").style.display = "block";
+        triggerDesktopNotification(r.name, "Patient Reminder");
+        r.notified=true;
+    }
+
+    if(isNeuralLinked && !r.taken) {
+        if(r.date === currentDate && currentTime > r.time) {
+            document.getElementById('neuralStatus').innerText = "● SOS: MISSED DOSE ALERT";
+            document.getElementById('neuralStatus').style.color = "#ff4d4d";
+            
+            if(!r.caregiverNotified) {
+                triggerCaregiverNotification(r.name);
+                r.caregiverNotified = true;
+            }
+        }
+    }
+});
+},10000);
+
+function triggerDesktopNotification(name, type){
+if(Notification.permission==="granted"){
+new Notification(`Medixo: ${type}`,{
+body: type === "Patient Reminder" ? `It's time to take your dose of ${name}` : `ALERT: Patient missed dose of ${name}. Contact them now.`,
+icon:"https://cdn-icons-png.flaticon.com/512/883/883356.png"
+});
+}
+}
+
+function triggerCaregiverNotification(medName) {
+    if(Notification.permission==="granted"){
+        new Notification("Medixo Neural Link: MISSING DOSE",{
+            body: `Caregiver Alert: The patient has not marked "${medName}" as taken. Check in immediately.`,
+            icon: "https://cdn-icons-png.flaticon.com/512/564/564444.png"
+        });
+    }
+}
+
+window.onload = loadUser;
+
+</script>
+
+</body>
+</html>
